@@ -10,7 +10,8 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "text")
@@ -19,6 +20,7 @@ public class Message {
     private String text;
 
     @Column(name = "tag")
+    @Length(max = 255, message = "Message too long")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)

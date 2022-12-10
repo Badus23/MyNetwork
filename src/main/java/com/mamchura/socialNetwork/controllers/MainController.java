@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Controller
@@ -51,11 +52,9 @@ public class MainController {
                        @RequestParam("file") MultipartFile file) throws IOException {
         message.setAuthor(user);
         if (bindingResult.hasErrors()) {
-            Map<String, String> errors = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(
-                    fieldError -> fieldError.getField() + "Error",
-                    FieldError::getDefaultMessage
-            ));
+            Map<String, String> errors = UtilController.getErrors(bindingResult);
             model.mergeAttributes(errors);
+            model.addAttribute("message", message);
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 File dir = new File(uploadPath);
@@ -70,10 +69,10 @@ public class MainController {
 
                 message.setFilename(resultName);
             }
+            model.addAttribute("message", null);
             repository.save(message);
         }
-
-
-        return "redirect:/main";
+        model.addAttribute("messages", repository.findAll());
+        return "messages";
     }
 }
