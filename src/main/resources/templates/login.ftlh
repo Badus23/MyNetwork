@@ -2,7 +2,6 @@
 <#import "macros/login.ftlh" as l>
 
 <@c.page>
-Login
-<@l.login "/login" />
-<a href="/registration">Register</a>
+    ${message?ifExists}
+    <@l.login "/login" false/>
 </@c.page>

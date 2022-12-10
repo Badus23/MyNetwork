@@ -1,20 +1,32 @@
 package com.mamchura.socialNetwork.models;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
+@Table(name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "text")
+    @NotBlank(message = "Please fill the message")
+    @Length(max = 2048, message = "Message too long")
     private String text;
 
+    @Column(name = "tag")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
+
+    @Column(name = "filename")
+    private String filename;
 
     public Message() {}
 
@@ -22,6 +34,14 @@ public class Message {
         this.text = text;
         this.tag = tag;
         author = user;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Integer getId() {

@@ -2,7 +2,7 @@
 <#import "macros/login.ftlh" as l>
 
 <@c.page>
-Register
-${message!" "}
-<@l.login "/registration"/>
+    <div class="mb-1">Register</div>
+    ${message?ifExists}
+    <@l.login "/registration" true/>
 </@c.page>
